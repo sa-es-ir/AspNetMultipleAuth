@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using MultipleAuthSample.AuthHandlers;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +17,27 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+    .AddPolicyScheme(JwtBearerDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme, options =>
+     {
+         options.ForwardDefaultSelector = context =>
+         {
+             var jwtHandler = new JwtSecurityTokenHandler();
+             var token = context.Request.Headers[HeaderNames.Authorization];
+             if (!string.IsNullOrEmpty(token))
+             {
+                 var tokenIssuer = jwtHandler.ReadJwtToken(token).Issuer;
+
+                 if (tokenIssuer == config.GetValue<string>("IdentitySeverA:Issuer"))
+                     return "Scheme_ServerA";
+                 else
+                     return "Scheme_ServerB";
+             }
+
+             return "CustomToken";
+         };
+     })
   //IdentityServerA, the Scheme name is JwtBearerDefaults.AuthenticationScheme (Bearer)
-  .AddJwtBearer(options =>
+  .AddJwtBearer("Scheme_ServerA", options =>
   {
       options.TokenValidationParameters = new TokenValidationParameters
       {
