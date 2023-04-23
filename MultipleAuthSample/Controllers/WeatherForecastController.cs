@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,8 +22,12 @@ namespace MultipleAuthSample.Controllers
 
         [HttpGet("serverA")]
         [Authorize]
-        public IEnumerable<WeatherForecast> GetServerA()
+        public async IEnumerable<WeatherForecast> GetServerA()
         {
+
+
+
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
