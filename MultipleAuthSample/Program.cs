@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MultipleAuthSample.AuthHandlers;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,7 @@ builder.Services.AddAuthentication(options =>
           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("A-Secret-Key:)"))
       };
   })
+  //IdentityServerB, the Scheme name is Scheme_ServerB
   .AddJwtBearer("Scheme_ServerB", options =>
   {
       options.TokenValidationParameters = new TokenValidationParameters
@@ -32,6 +34,11 @@ builder.Services.AddAuthentication(options =>
           ValidIssuer = config.GetValue<string>("IdentitySeverB:Issuer"),
           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("B-Secret-Key:)"))
       };
+  })
+  //The scheme name is CustomToken
+  .AddScheme<CustomAuthSchemeOptions, CustomAuthenticationHandler>("CustomToken", options =>
+  {
+      // no need to set any options because you will handle them in the handler implementation
   });
 
 builder.Services.AddAuthorization();
