@@ -22,12 +22,8 @@ namespace MultipleAuthSample.Controllers
 
         [HttpGet("serverA")]
         [Authorize]
-        public async IEnumerable<WeatherForecast> GetServerA()
+        public IEnumerable<WeatherForecast> GetServerA()
         {
-
-
-
-
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -38,7 +34,7 @@ namespace MultipleAuthSample.Controllers
         }
 
         [HttpGet("ServerB")]
-        [Authorize(AuthenticationSchemes = "Scheme_ServerB")]
+        [Authorize]
         public IEnumerable<WeatherForecast> GetServerB()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -51,7 +47,7 @@ namespace MultipleAuthSample.Controllers
         }
 
         [HttpGet("Custom")]
-        [Authorize(AuthenticationSchemes = "Scheme_CustomToken")]
+        [Authorize]
         public IEnumerable<WeatherForecast> GetCustomToken()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
