@@ -24,7 +24,7 @@ namespace MultipleAuthSample.AuthHandlers
             if (!Request.Headers.TryGetValue("Authorization", out var customToken))
                 return AuthenticateResult.Fail("No AccessToken");
 
-            var dbToken = await _tokenRepository.GetAsync(customToken);
+            var dbToken = await _tokenRepository.GetAsync(customToken!);
 
             if (dbToken is null)
                 return AuthenticateResult.Fail("invalid token");
