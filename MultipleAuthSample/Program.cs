@@ -17,6 +17,8 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+    //the scheme name is JwtBearerDefaults.AuthenticationScheme and this is the default and all requests go to this scheme
+    // and then redirect to appropriate authentication scheme
     .AddPolicyScheme(JwtBearerDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme, options =>
      {
          options.ForwardDefaultSelector = context =>
