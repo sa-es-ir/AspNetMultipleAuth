@@ -25,7 +25,7 @@ builder.Services.AddAuthentication(options =>
          {
              var jwtHandler = new JwtSecurityTokenHandler();
              var token = context.Request.Headers[HeaderNames.Authorization];
-             if (!string.IsNullOrEmpty(token))
+             if (!string.IsNullOrEmpty(token) && jwtHandler.CanReadToken(token))
              {
                  var tokenIssuer = jwtHandler.ReadJwtToken(token).Issuer;
 
