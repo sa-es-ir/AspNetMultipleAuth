@@ -36,7 +36,7 @@ builder.Services.AddAuthentication(options =>
              return "CustomToken";
          };
      })
-  //IdentityServerA, the Scheme name is JwtBearerDefaults.AuthenticationScheme (Bearer)
+  //IdentityServerA, the Scheme name is Scheme_ServerA
   .AddJwtBearer("Scheme_ServerA", options =>
   {
       options.TokenValidationParameters = new TokenValidationParameters
