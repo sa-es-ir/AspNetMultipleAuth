@@ -3,12 +3,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using MultipleAuthSample.AuthHandlers;
+using MultipleAuthSample.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 var config = builder.Configuration;
 
