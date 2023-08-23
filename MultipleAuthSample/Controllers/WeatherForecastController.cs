@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,7 +33,7 @@ namespace MultipleAuthSample.Controllers
         }
 
         [HttpGet("ServerB")]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "Scheme_ServerB")]
         public IEnumerable<WeatherForecast> GetServerB()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
