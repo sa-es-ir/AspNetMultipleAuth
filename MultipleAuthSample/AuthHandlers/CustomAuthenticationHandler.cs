@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using MultipleAuthSample.Interfaces;
-using System.Data;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
@@ -24,7 +23,7 @@ namespace MultipleAuthSample.AuthHandlers
             if (!Request.Headers.TryGetValue("Authorization", out var customToken))
                 return AuthenticateResult.Fail("No AccessToken");
 
-            var dbToken = await _tokenRepository.GetAsync(customToken!);
+            var dbToken = await _tokenRepository.GetAsync(customToken.ToString().GetAccessToken()!);
 
             if (dbToken is null)
                 return AuthenticateResult.Fail("invalid token");
